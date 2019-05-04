@@ -10,7 +10,7 @@ public class FormatController implements Controller {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
 		String data=request.getParameter("code");
-		data=JavaForm.formJava(data);
+		data=AppendBraceUtil.AppendBrace(data,"for");
 		System.out.println(data);
 		ModelAndView mav = new ModelAndView("formCode.jsp");
 		mav.addObject("formCode", data);

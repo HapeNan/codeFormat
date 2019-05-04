@@ -16,19 +16,6 @@ import java.util.regex.Pattern;
 **/
 
 public class JavaForm {
-
-
-   public static void main(String[] args) {
-       String str = "while() {AD;B; //sdfadf\r\n" + 
-           "DD2;\r\n" + 
-           "DD;/*ssssss */for(){S;}\r\n" + 
-           "}";
-       
-       
-       str = formJava(str);
-       System.out.println();
-       System.out.println(str);
-   }
  
    /**
     * @说明 ：格式化java代码 
