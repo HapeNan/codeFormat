@@ -42,6 +42,8 @@ public class JavaForm {
 //       dataTmp = appendCurlyBrace(dataTmp, "else if");
        
        dataTmp = repalceHHF(dataTmp,"\r\n","");
+       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");
+       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "else");
        
        dataTmp = repalceHHF(dataTmp,"{","{\n");
        dataTmp = repalceHHF(dataTmp,"}","}\n");
