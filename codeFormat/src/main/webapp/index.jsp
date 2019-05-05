@@ -63,7 +63,7 @@
     <div class="container">
         <div class="row">
             <ul id="top-menu" style="float:left;">
-              <li class="span1 active"><a href="#top"><span class="hidden">Top</span></a></li>
+              <li class="span1 active"><span class="hidden">Top</span></a></li>
               <li class="span2"><a href="/codeFormat/index">刷新页面</a></li>
             </ul>
 	</div>
