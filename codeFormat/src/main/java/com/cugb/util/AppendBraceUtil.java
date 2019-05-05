@@ -46,7 +46,8 @@ public class AppendBraceUtil {
 //	        	}
 	        	 
 //	         int i=indexEnd+type.length();
-	         if("for".equals(type)||"if".equals(type)) {
+	         if("for".equals(type)||"if".equals(type)||"catch".equals(type)||"while".equals(type)) {
+	        	 //对于while要判断是while(){}还是do{}while();
 	        	 String tem2 = "";
 		         while(true){    //寻找当前关键字后匹配的后括号
 		         	if(i>=string.length()) {
@@ -65,10 +66,19 @@ public class AppendBraceUtil {
 		         }
 	         }
 	         
-	         
-	         if((string.length()-1)==i)    //最后一句
+	         if((string.length()-1)==i)    //最后一个字符
 	           break;
-	         
+	         //如果while括号后直接接分号，则不进行，直接跳过
+	         if("while".equals(type)) {
+	        	 if(string.charAt(i+1)==';') {
+	        		 break;
+	        	 }
+	        	 else if(string.charAt(i+1)==' '){
+	        		 if((i+2)<string.length()&&string.charAt(i+2)==';') {
+	        			 break;
+	        		 }
+	        	 }
+	         }
 	         //如果有{则直接寻找下一个  ){
 	           if(string.charAt(i+2)=='{'||string.charAt(i+1)=='{')
 	           continue;
