@@ -11,8 +11,6 @@ import java.util.regex.Pattern;
 
 /**
 * @说明 ： java格式化
-* @作者 ：WangXL
-* @时间 ：2018 11 22
 **/
 
 public class JavaForm {
@@ -22,18 +20,14 @@ public class JavaForm {
     * @参数 ：@param dataTmp
     * @参数 ：@return
     * @返回 ：String
-    * @作者 ：WangXL
-    * @时间 ：2018 11 22
     **/
    public static String formJava(String data) {
        String dataTmp = replaceStrToUUid(data,"\"");
        dataTmp = replaceStrToUUid(dataTmp,"'");
-       
-       
-       dataTmp = seperateByBlank(dataTmp, "for");
-       dataTmp = seperateByBlank(dataTmp, "if");
+//       dataTmp = seperateByBlank(dataTmp, "for");
+//       dataTmp = seperateByBlank(dataTmp, "if");
        dataTmp = dataTmp.trim();
-       dataTmp = replaceForSegmentToUUid(dataTmp,"for \\(");
+//       dataTmp = replaceForSegmentToUUid(dataTmp,"for \\(");
        
        dataTmp = repalceHHF(dataTmp, "){", ") {");
        
@@ -42,9 +36,13 @@ public class JavaForm {
 //       dataTmp = appendCurlyBrace(dataTmp, "else if");
        
        dataTmp = repalceHHF(dataTmp,"\r\n","");
-       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");
+       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");	
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "else");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "if");
+       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "try");
+       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "catch");
+       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "while");
+       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "do");
        dataTmp = repalceHHF(dataTmp,"{","{\n");
        dataTmp = repalceHHF(dataTmp,"}","}\n");
        dataTmp = repalceHHF(dataTmp,"/*","\n/*\n");
@@ -73,16 +71,17 @@ public class JavaForm {
     * @时间 ：2019 5 2
     **/
    public static String seperateByBlank(String string,String type) {
-	   String slashMacherString="[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
-       Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
+//	   String slashMacherString="[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
+//       Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
+	   Matcher slashMatcher = Pattern.compile(type).matcher(string);
        StringBuilder sb = new StringBuilder(); 
        int indexHome = -1; //开始截取下标
        while(slashMatcher.find()) {
            int indexEnd = slashMatcher.start();
-           String tmp = string.substring(indexHome+1,indexEnd+1); //获取"if"前面的数据
+           String tmp = string.substring(indexHome+1,indexEnd); //获取"if"前面的数据
            sb.append(tmp);
            sb.append(" "+type+" ");
-           indexHome = indexEnd+type.length();
+           indexHome = indexEnd+type.length()-1;
        }
        //加上最后一个引号的后面的字符串
       sb.append(string.substring(indexHome+1,string.length()));
@@ -96,6 +95,8 @@ public class JavaForm {
     * @时间 ：2019 5 2
     **/
    public static String appendCurlyBrace(String string,String type){
+//	   String slashMacherString="[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
+//     Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
      Matcher slashMatcher = Pattern.compile(type).matcher(string);
      StringBuilder sb = new StringBuilder();
      int indexHome = -1; //开始截取下标
@@ -143,6 +144,8 @@ public class JavaForm {
     * @时间 ：2019 5 2
     **/
    public static String replaceForSegmentToUUid(String string,String type){
+//	   String slashMacherString="[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
+//     Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
        Matcher slashMatcher = Pattern.compile(type).matcher(string);
        StringBuilder sb = new StringBuilder();
        int indexHome = -1; //开始截取下标
@@ -181,10 +184,10 @@ public class JavaForm {
     * @说明 ： 循环替换指定字符为随机uuid  并将uuid存入全局map:mapZY   
     * @参数 ：@param string   字符串
     * @参数 ：@param type    指定字符
-    * @作者 ：WangXL
-    * @时间 ：2018 11 23
     **/
    public static String replaceStrToUUid(String string,String type){
+//	   String slashMacherString="[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
+//     Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
        Matcher slashMatcher = Pattern.compile(type).matcher(string);
        boolean bool = false;
        StringBuilder sb = new StringBuilder();
@@ -304,7 +307,6 @@ public class JavaForm {
     * @说明 ： 获得栈数据
     * @参数 ：@param stack 
     * @参数 ：@param bool true 弹出  false 获取
-    * @时间 ：2018 11 22
     **/
    public static String getStack(Stack<String> stack,boolean bool){
        String result = null;
