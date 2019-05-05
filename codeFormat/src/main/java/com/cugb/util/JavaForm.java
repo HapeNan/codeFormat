@@ -24,16 +24,16 @@ public class JavaForm {
    public static String formJava(String data) {
        String dataTmp = replaceStrToUUid(data,"\"");
        dataTmp = replaceStrToUUid(dataTmp,"'");
-//       dataTmp = seperateByBlank(dataTmp, "for");
-//       dataTmp = seperateByBlank(dataTmp, "if");
+       dataTmp = seperateByBlank(dataTmp, "for");
+       dataTmp = seperateByBlank(dataTmp, "if");
        dataTmp = dataTmp.trim();
-//       dataTmp = replaceForSegmentToUUid(dataTmp,"for \\(");
+       dataTmp = replaceForSegmentToUUid(dataTmp,"for \\(");
        
        dataTmp = repalceHHF(dataTmp, "){", ") {");
        
-//       dataTmp = appendCurlyBrace(dataTmp, "for");
-//       dataTmp = appendCurlyBrace(dataTmp, "if");
-//       dataTmp = appendCurlyBrace(dataTmp, "else if");
+       dataTmp = appendCurlyBrace(dataTmp, "for");
+       dataTmp = appendCurlyBrace(dataTmp, "if");
+       dataTmp = appendCurlyBrace(dataTmp, "else if");
        
        dataTmp = repalceHHF(dataTmp,"\r\n","");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");	
@@ -52,7 +52,7 @@ public class JavaForm {
        dataTmp = repalceHHF(dataTmp,";",";\n");
        dataTmp = repalceHHF(dataTmp,"//","\n//");
        
-        
+       dataTmp = repalceHHF(dataTmp, "){", ") {");
        //最后处理缩进
        dataTmp = repalceHHFX(dataTmp,"\n");
        
