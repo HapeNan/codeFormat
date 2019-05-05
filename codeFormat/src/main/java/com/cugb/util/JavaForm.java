@@ -44,7 +44,7 @@ public class JavaForm {
        dataTmp = repalceHHF(dataTmp,"\r\n","");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "else");
-       
+       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "if");
        dataTmp = repalceHHF(dataTmp,"{","{\n");
        dataTmp = repalceHHF(dataTmp,"}","}\n");
        dataTmp = repalceHHF(dataTmp,"/*","\n/*\n");
@@ -73,7 +73,8 @@ public class JavaForm {
     * @时间 ：2019 5 2
     **/
    public static String seperateByBlank(String string,String type) {
-       Matcher slashMatcher = Pattern.compile("[^A-Z|^a-z|^0-9|^$]"+type).matcher(string);
+	   String slashMacherString="[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
+       Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
        StringBuilder sb = new StringBuilder(); 
        int indexHome = -1; //开始截取下标
        while(slashMatcher.find()) {

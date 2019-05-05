@@ -7,7 +7,8 @@ import java.util.regex.Pattern;
 
 public class AppendBraceUtil {
 	public static String AppendBrace(String string, String type) {
-		 Matcher slashMatcher = Pattern.compile(type).matcher(string);
+		 String slashMatcherString = "[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
+		 Matcher slashMatcher = Pattern.compile(slashMatcherString).matcher(string);
 	     StringBuilder sb = new StringBuilder();
 	     int indexHome = -1; //开始截取下标
 	     Boolean flag=false;
@@ -18,9 +19,12 @@ public class AppendBraceUtil {
 	         if("for".equals(type)||"if".equals(type)) {
 	        	 String tem2 = "";
 		         while(true){    //寻找当前关键字后匹配的后括号
+		        	 if(i>=string.length()) {
+		        	 i--;
+		        	 break;
+		        	 }
 		             char c = string.charAt(i);
 		             if(c == ')'&&tem2.length()==1){
-		               i++;
 		               break;
 		             }else if(c == ')'){
 		               tem2 = tem2.substring(0,tem2.length()-1);
@@ -35,9 +39,9 @@ public class AppendBraceUtil {
 	         if(string.charAt(i)=='{'||string.charAt(i+1)=='{')
 	           continue;
 	         flag=true;
-	         String tmp = string.substring(indexHome+1,i); //获取后括号前面的数据(包括')')
+	         String tmp = string.substring(indexHome+1,i+1); //获取后括号前面的数据(包括')')
 	         sb.append(tmp+" {");
-	         int tempi = i;
+	         int tempi = i+1;
 	         while(true) {	//从关键字后开始往后寻找分号
 	             if(string.length()<=i) break;
 	        	 if(string.charAt(i)==';'){
@@ -90,9 +94,9 @@ public class AppendBraceUtil {
 		int flagnum=temp+1;
 		int i = 0;
 		while(true) {	//从后括号开始往后寻找分号
-			if(string.length()<=i) break;
-			if(string.charAt(i)==';'){
-				String tmp2 = typeString.substring(0,i-temp);//
+			if(typeString.length()<=i) break;
+			if(typeString.charAt(i)==';'){
+				String tmp2 = typeString.substring(0,i);//
 			//	String splitString=string.substring(0,string.length());
 				int Position = singleLine(typeString, type2, tmp2);
 
@@ -116,7 +120,8 @@ public class AppendBraceUtil {
 	*@Param pointi substring在string中的索引位置
 	*/
 	public static int singleLine(String string,String type,String substring) {
-		Matcher slashMatcher = Pattern.compile(type).matcher(substring);
+		String slashMatcherString="[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
+		Matcher slashMatcher = Pattern.compile(slashMatcherString).matcher(substring);
 		int indexHome = -1; //开始截取下标
 
 		while(slashMatcher.find()) {
@@ -167,7 +172,7 @@ public class AppendBraceUtil {
 					tempStack.pop();
 				}
 				if(tempStack.isEmpty()) {
-					substring2=string.substring(indexEnd, string.length());
+					substring2=string.substring(indexEnd+1, string.length());
 					flagnum=indexEnd;
 					break;
 				}
