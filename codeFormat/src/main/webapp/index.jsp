@@ -86,10 +86,10 @@
 		</div>
 		<div class="row">
 			<div class="span1"></div>
-			<div class="span10 align-left" style="margin-bottom:25px;">
-				<p>请在下列框中粘贴代码.</p>
-				<p>选择语言后单击按钮,将弹出一个带有语法高亮代码的新窗口.</p>
-				<p>将代码全选复制并粘贴到文档中.</p>
+			<div class="span10 align-left" style="margin-bottom:25px; margin-left:200px;">
+				<p>请在下列框中输入待格式化的代码.</p>
+				<p>选择语言类型，勾选功能框后，后单击按钮,将弹出一个带有语法高亮代码的新窗口.</p>
+			    <p>可以将格式化后的代码复制并粘贴到文档中.</p>
 			</div>
 			</div class="span1"></div>
 		</div>
