@@ -173,7 +173,7 @@ public class AppendBraceUtil {
 
 		while(slashMatcher.find()) {
 			int indexEnd = slashMatcher.start();
-			System.out.println(indexEnd);
+		//	System.out.println(indexEnd);
 			indexHome = indexEnd + type.length()-1;//indexHome为type的最后一个字符的索引
 			break;
 		}

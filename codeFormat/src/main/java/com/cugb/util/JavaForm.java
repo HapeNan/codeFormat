@@ -24,16 +24,14 @@ public class JavaForm {
    public static String formJava(String data) {
        String dataTmp = replaceStrToUUid(data,"\"");
        dataTmp = replaceStrToUUid(dataTmp,"'");
-//       dataTmp = seperateByBlank(dataTmp, "for");
-//       dataTmp = seperateByBlank(dataTmp, "if");
+       dataTmp = seperateByBlank(dataTmp, "for");
+       dataTmp = seperateByBlank(dataTmp, "if");
+       dataTmp = seperateByBlank(dataTmp, "while");
+       dataTmp = seperateByBlank(dataTmp, "catch");
        dataTmp = dataTmp.trim();
-//       dataTmp = replaceForSegmentToUUid(dataTmp,"for \\(");
+       dataTmp = replaceForSegmentToUUid(dataTmp,"for \\(");
        
        dataTmp = repalceHHF(dataTmp, "){", ") {");
-       
-//       dataTmp = appendCurlyBrace(dataTmp, "for");
-//       dataTmp = appendCurlyBrace(dataTmp, "if");
-//       dataTmp = appendCurlyBrace(dataTmp, "else if");
        
        dataTmp = repalceHHF(dataTmp,"\r\n","");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");	
@@ -246,7 +244,7 @@ public class JavaForm {
                    result.append(t.trim());
                    //不能去除注释行后面的"\n"
                    if(t.indexOf("//")!=-1 && "\r\n".equals(a)){
-                     System.out.println("sss");  
+                 //    System.out.println("sss");  
                      result.append("\r\n"); 
                    }
                }

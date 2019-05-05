@@ -14,7 +14,7 @@ public class FormatController implements Controller {
 //		data=AppendBraceUtil.AppendBrace(data,"if");
 //		data=AppendBraceUtil.AppendBrace(data,"else");
 //		data=AppendBraceUtil.AppendBrace(data,"for");
-		System.out.println(data);
+//		System.out.println(data);
 		ModelAndView mav = new ModelAndView("formCode.jsp");
 		mav.addObject("formCode", data);
 		return mav;
