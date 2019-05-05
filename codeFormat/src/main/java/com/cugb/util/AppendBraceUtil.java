@@ -155,7 +155,7 @@ public class AppendBraceUtil {
 			}
 			i++;
 		}
-		return string.length();
+		return temp;
 	}
 	
 	/*
@@ -185,7 +185,7 @@ public class AppendBraceUtil {
 			break;
 		}
 		
-		//第一个就匹配到分号作为结束符
+		//第一个就匹配到分号作为结束符 
 		if(string.charAt(subP)==';') {
 			//如果分号前有双语句，则继续寻找双语句的结束
 			String substring1=string.substring(indexHome+1,string.length());
@@ -195,6 +195,7 @@ public class AppendBraceUtil {
 			int dowNum=doubleLine(substring1,"do","while",substring2);
 			 int []brace= {ifNum,trycNum,dowNum};
              Arrays.parallelSort(brace);
+             System.out.println(subP+"  "+indexHome+"  "+brace[2]);
 			if(brace[2]==-1)
 			return subP;
 			else

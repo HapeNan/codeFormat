@@ -28,11 +28,10 @@ public class JavaForm {
        dataTmp = seperateByBlank(dataTmp, "if");
        dataTmp = seperateByBlank(dataTmp, "while");
        dataTmp = seperateByBlank(dataTmp, "catch");
+
        dataTmp = dataTmp.trim();
        dataTmp = replaceForSegmentToUUid(dataTmp,"for \\(");
-       
        dataTmp = repalceHHF(dataTmp, "){", ") {");
-       
        dataTmp = repalceHHF(dataTmp,"\r\n","");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");	
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "else");
@@ -50,7 +49,7 @@ public class JavaForm {
        dataTmp = repalceHHF(dataTmp,";",";\n");
        dataTmp = repalceHHF(dataTmp,"//","\n//");
        
-        
+       dataTmp = repalceHHF(dataTmp, "){", ") {");
        //最后处理缩进
        dataTmp = repalceHHFX(dataTmp,"\n");
        
