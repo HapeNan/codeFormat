@@ -64,7 +64,7 @@
         <div class="row">
             <ul id="top-menu" style="float:left;">
               <li class="span1 active"><a href="#top"><span class="hidden">Top</span></a></li>
-              <li class="span2"><a href="/">Home</a></li>
+              <li class="span2"><a href="/codeFormat/index">刷新页面</a></li>
             </ul>
 	</div>
     </div>
@@ -87,7 +87,7 @@
 		<div class="row">
 			<div class="span1"></div>
 			<div class="span10 align-left" style="margin-bottom:25px;">
-				<p>清在下列框中粘贴代码.</p>
+				<p>请在下列框中粘贴代码.</p>
 				<p>选择语言后单击按钮,将弹出一个带有语法高亮代码的新窗口.</p>
 				<p>将代码全选复制并粘贴到文档中.</p>
 			</div>
