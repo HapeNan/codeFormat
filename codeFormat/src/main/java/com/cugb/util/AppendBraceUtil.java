@@ -19,33 +19,6 @@ public class AppendBraceUtil {
 	    	 indexHome=-1;
 	         int indexEnd = slashMatcher.start();
 	         int i=indexEnd+type.length()-1;
-//	         if("for".equals(type)||"if".equals(type)||"while".equals(type)||"catch".equals(type)) {
-//	        	 Stack tempStack = new Stack<String>();
-//	        	 String braceStr=string.substring(i+1,string.length());
-//	        	Matcher braceSlashMatcher = Pattern.compile("[(]").matcher(braceStr);
-//	        	if(braceSlashMatcher.find()) {
-//		        	braceSlashMatcher = Pattern.compile("[(,)]").matcher(braceStr);
-//		 			while(braceSlashMatcher.find()) {
-//		 			     i=braceSlashMatcher.start();
-//		 			     System.out.println(i);
-//			        	 if(i==string.length()) {
-//			        		 i--; 
-//			        		 break;
-//			        	 }
-//			        	 if(string.charAt(i)=='(') {
-//		 					tempStack.push(string.charAt(i));
-//		 				}
-//		 				if(string.charAt(i)==')') {
-//		 					tempStack.pop();
-//		 				}
-//		 				if(tempStack.isEmpty()) {
-//		 					break;
-//		 				}
-//		 				i++;
-//		 			}
-//	        	}
-	        	 
-//	         int i=indexEnd+type.length();
 	         if("for".equals(type)||"if".equals(type)||"catch".equals(type)||"while".equals(type)) {
 	        	 //对于while要判断是while(){}还是do{}while();
 	        	 String tem2 = "";
@@ -79,7 +52,6 @@ public class AppendBraceUtil {
 	        		 }
 	        	 }
 	         }
-	         //如果有{则直接寻找下一个  ){
 	           if(string.charAt(i+2)=='{'||string.charAt(i+1)=='{')
 	           continue;
 	         
@@ -110,7 +82,6 @@ public class AppendBraceUtil {
 	                	 sb.append(tmp2+" }");
 	                	 indexHome=brace[4]+tempi;
 	                 }
-	              //   indexHome = i;
 	                 break;
 	             }
 	             i++;
@@ -118,9 +89,15 @@ public class AppendBraceUtil {
 	         if(flag==true) {
 	         if(indexHome!=(string.length()-1)) {
 	         sb.append(string.substring(indexHome+1,string.length()));
+//	         string=sb.toString();
+//	         sb.delete(0, sb.length());
+//	         slashMatcher = Pattern.compile(type).matcher(string);
 	         }
 	         string=sb.toString();
 	         sb.delete(0, sb.length());
+	         slashMatcher = Pattern.compile(type).matcher(string);
+//	         string=sb.toString();
+//	         sb.delete(0, sb.length());
 	       //  sb=new StringBuilder
 	         flag=false;
 	         }

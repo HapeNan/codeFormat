@@ -33,6 +33,8 @@ public class JavaForm {
        dataTmp = replaceForSegmentToUUid(dataTmp,"for \\(");
        dataTmp = repalceHHF(dataTmp, "){", ") {");
        dataTmp = repalceHHF(dataTmp,"\r\n","");
+       dataTmp = repalceHHF(dataTmp,"\n","");
+       dataTmp = repalceHHF(dataTmp,"\t"," ");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");	
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "else");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "if");
