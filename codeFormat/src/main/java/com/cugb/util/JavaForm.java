@@ -22,20 +22,23 @@ public class JavaForm {
     * @返回 ：String
     **/
    public static String formJava(String data) {
-       String dataTmp = replaceStrToUUid(data,"\"");
-       dataTmp = replaceStrToUUid(dataTmp,"'");
-       dataTmp = seperateByBlank(dataTmp, "for");
-       dataTmp = seperateByBlank(dataTmp, "if");
-       dataTmp = seperateByBlank(dataTmp, "while");
-       dataTmp = seperateByBlank(dataTmp, "catch");
-
-       dataTmp = dataTmp.trim();
-       dataTmp = replaceForSegmentToUUid(dataTmp,"for \\(");
-       dataTmp = repalceHHF(dataTmp, "){", ") {");
-       dataTmp = repalceHHF(dataTmp,"\r\n","");
-       dataTmp = repalceHHF(dataTmp,"\n","");
-       dataTmp = repalceHHF(dataTmp,"\t"," ");
-       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");
+//       String dataTmp = replaceStrToUUid(data,"\"");
+//       dataTmp = replaceStrToUUid(dataTmp,"'");
+//       dataTmp = seperateByBlank(dataTmp, "for");
+//       dataTmp = seperateByBlank(dataTmp, "if");
+//       dataTmp = seperateByBlank(dataTmp, "while");
+//       dataTmp = seperateByBlank(dataTmp, "catch");
+//
+//       dataTmp = dataTmp.trim();
+//       dataTmp = replaceForSegmentToUUid(dataTmp,"for \\(");
+//       dataTmp = repalceHHF(dataTmp, "){", ") {");
+//       dataTmp = repalceHHF(dataTmp,"\r\n","");
+//       dataTmp = repalceHHF(dataTmp,"\n","");
+//       dataTmp = repalceHHF(dataTmp,"\t"," ");
+	   
+	   
+       String dataTmp=preSolve(data);
+       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");	
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "else");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "if");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "try");
@@ -177,7 +180,7 @@ public class JavaForm {
     **/
    public static String replaceForSegmentToUUid(String string,String type){
 //	   String slashMacherString="[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
-//	   Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
+//     Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
        Matcher slashMatcher = Pattern.compile(type).matcher(string);
        StringBuilder sb = new StringBuilder();
        int indexHome = -1; //开始截取下标
@@ -210,8 +213,86 @@ public class JavaForm {
        sb.append(string.substring(indexHome+1,string.length()));
        return sb.toString();
    }
-   
+    
    public static Map<String,String> mapZY = new HashMap<String,String>();
+   public static String preNote(String string,String type) {
+	   Matcher slashMatcher = Pattern.compile(type).matcher(string);
+	   StringBuilder sb = new StringBuilder(string);
+       int indexHome = -1; //开始截取下标
+       while(slashMatcher.find()) {
+	       int indexEnd = slashMatcher.start();
+	       for(int i=indexEnd;;i++)
+	       {
+	    	   if(sb.charAt(i)=='\n')
+	    	   {
+	    		   String tmp=sb.substring(indexEnd,i);
+	    		   String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+	               mapZY.put(uuid, tmp);
+	               sb.replace(indexEnd,i,uuid);
+	               break;
+	    	   }
+	       }
+       }
+       while(slashMatcher.find()) {
+	       int indexEnd = slashMatcher.start();
+	       for(int i=indexEnd;;i++)
+	       {
+	    	   if(sb.charAt(i)=='\r')
+	    	   {
+	    		   String tmp=sb.substring(indexEnd,i);
+	    		   String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+	               mapZY.put(uuid, tmp);
+	               sb.replace(indexEnd,i,uuid);
+	               break;
+	    	   }
+	       }
+       }
+       return sb.toString();
+   }
+   public static boolean checkBrackets(String string)
+   {
+       Stack<Character> stack =new Stack<>();
+       for(int i=0;i<string.length();i++){
+           char c=string.charAt(i);
+           if(c=='(' || c=='[' || c=='{')
+               stack.push(c);
+           else if(c==')' || c==']' || c=='}'){
+        	   if(stack.isEmpty())
+        		   return false;
+               char topChar=stack.pop();
+               if(c==')' && topChar!='(')
+                   return false;
+               if(c==']' && topChar!='[')
+                   return false;
+               if(c=='}' && topChar!='{')
+                   return false;
+           }
+       }
+       return stack.isEmpty();
+   }
+   public static String preSolve(String data) {
+	   String dataTmp=preNote(data,"//");
+	   if(!checkBrackets(dataTmp))
+	   {
+		   System.out.println("Error");//网页端弹出“错误信息汇报”
+	   }
+	   dataTmp = replaceStrToUUid(dataTmp,"\"");
+       dataTmp = replaceStrToUUid(dataTmp,"'");
+       
+       dataTmp = seperateByBlank(dataTmp, "for");
+       dataTmp = seperateByBlank(dataTmp, "if");
+       dataTmp = seperateByBlank(dataTmp, "while");
+       dataTmp = seperateByBlank(dataTmp, "catch");
+
+       dataTmp = dataTmp.trim();
+       dataTmp = replaceForSegmentToUUid(dataTmp,"for \\(");
+       dataTmp = repalceHHF(dataTmp, "){", ") {");
+       dataTmp = repalceHHF(dataTmp,"\r\n","");
+       dataTmp = repalceHHF(dataTmp,"\n","");
+       //dataTmp = repalceHHF(dataTmp,"\t"," ");
+       
+       return dataTmp;
+   }
    /**
     * @说明 ： 循环替换指定字符为随机uuid  并将uuid存入全局map:mapZY   
     * @参数 ：@param string   字符串
@@ -219,7 +300,7 @@ public class JavaForm {
     **/
    public static String replaceStrToUUid(String string,String type){
 //	   String slashMacherString="[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
-//	   Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
+//     Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
        Matcher slashMatcher = Pattern.compile(type).matcher(string);
        boolean bool = false;
        StringBuilder sb = new StringBuilder();
@@ -245,7 +326,7 @@ public class JavaForm {
                   int tem2Len = tem2.length();
                   if(tem2Len>-1){
                        //结束符前有斜杠转义符 需要判断转义个数奇偶   奇数是转义了  偶数才算是结束符号   
-                       if(tem2Len % 2==1){
+                       if(tem2Len % 2==1){ 
                            //奇数 非结束符
                        }else{
                            //偶数才算是结束符号
