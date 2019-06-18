@@ -35,7 +35,7 @@ public class JavaForm {
        dataTmp = repalceHHF(dataTmp,"\r\n","");
        dataTmp = repalceHHF(dataTmp,"\n","");
        dataTmp = repalceHHF(dataTmp,"\t"," ");
-       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");	
+       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "else");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "if");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "try");
@@ -67,24 +67,57 @@ public class JavaForm {
     * @说明 ：在关键字的前后添加分隔空格
     * @参数 ：@param string 字符串  
     * @参数 ：@param type 关键字类型  
-    * @时间 ：2019 5 2
+    * @时间 ：2019 6 18
     **/
    public static String seperateByBlank(String string,String type) {
-//	   String slashMacherString="[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
-//       Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
-	   Matcher slashMatcher = Pattern.compile(type).matcher(string);
+       Matcher slashMatcher = Pattern.compile(type).matcher(string);
        StringBuilder sb = new StringBuilder(); 
        int indexHome = -1; //开始截取下标
+       //先检测关键字前字符
        while(slashMatcher.find()) {
-           int indexEnd = slashMatcher.start();
+           int indexEnd = slashMatcher.start(); //indexEnd指向type的第一个字符
            String tmp = string.substring(indexHome+1,indexEnd); //获取"if"前面的数据
            sb.append(tmp);
-           sb.append(" "+type+" ");
+           if(indexEnd==0) continue;
+           switch(string.charAt(indexEnd-1)) {
+             case ';':
+             case '}':
+             case ')':
+               sb.append(" "+type);
+               break;
+             default:
+               sb.append(type);
+               break;
+           }
            indexHome = indexEnd+type.length()-1;
        }
        //加上最后一个引号的后面的字符串
       sb.append(string.substring(indexHome+1,string.length()));
-      return sb.toString();
+      
+      //检测关键字后的字符
+      String tmpstr = sb.toString();
+      slashMatcher = Pattern.compile(type).matcher(tmpstr);
+      StringBuilder sb2 = new StringBuilder(); 
+      int indexHome2 = -1; //开始截取下标
+      while(slashMatcher.find()) {
+          int indexEnd = slashMatcher.start(); //indexEnd指向type前一个字符
+          String tmp = tmpstr.substring(indexHome2+1,indexEnd); //获取"type"前面的数据
+          sb2.append(tmp);
+          //判断"type"关键字后一个字符的内容并处理
+          switch(tmpstr.charAt(indexEnd+type.length())) {   
+            case '(':
+              sb2.append(type +" ");
+              break;
+            default:
+              sb2.append(type);
+              break;
+          }
+          indexHome2 = indexEnd+type.length()-1;
+      }
+      //加上最后一个引号的后面的字符串
+      sb2.append(tmpstr.substring(indexHome2+1,tmpstr.length()));
+
+      return sb2.toString();
    }
    
    /**
@@ -144,7 +177,7 @@ public class JavaForm {
     **/
    public static String replaceForSegmentToUUid(String string,String type){
 //	   String slashMacherString="[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
-//     Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
+//	   Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
        Matcher slashMatcher = Pattern.compile(type).matcher(string);
        StringBuilder sb = new StringBuilder();
        int indexHome = -1; //开始截取下标
@@ -186,7 +219,7 @@ public class JavaForm {
     **/
    public static String replaceStrToUUid(String string,String type){
 //	   String slashMacherString="[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
-//     Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
+//	   Matcher slashMatcher = Pattern.compile(slashMacherString).matcher(string);
        Matcher slashMatcher = Pattern.compile(type).matcher(string);
        boolean bool = false;
        StringBuilder sb = new StringBuilder();
@@ -212,7 +245,7 @@ public class JavaForm {
                   int tem2Len = tem2.length();
                   if(tem2Len>-1){
                        //结束符前有斜杠转义符 需要判断转义个数奇偶   奇数是转义了  偶数才算是结束符号   
-                       if(tem2Len % 2==1){ 
+                       if(tem2Len % 2==1){
                            //奇数 非结束符
                        }else{
                            //偶数才算是结束符号
