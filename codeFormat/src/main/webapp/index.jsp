@@ -112,17 +112,17 @@
 						<select name="class" id="class">
 							<option value="c++">C, C++</option>							
 							<option value="c#">C#</option>							
-							<option value="css">CSS</option>							
+						<!--  	<option value="css">CSS</option>							
 							<option value="delphi">Delphi, Pascal</option>							
-							<option value="xml">XML</option>														
+							<option value="xml">XML</option>			-->											
 							<option value="java">Java</option>																					
-							<option value="javascript">Javascript</option>																												
+							<!--<option value="javascript">Javascript</option>																												
 							<option value="php">PHP</option>							
 							<option value="python">Python</option>							
 							<option value="ruby">Ruby</option>							
-							<option value="sql">SQL</option>							
-							<option value="vb">VB</option>							
-							<option value="xml">HTML</option>														
+							<option value="sql">SQL</option>
+							<option value="xml">HTML</option>		-->						
+							<option value="vb">VB</option>																				
 						</select>
 					</td>
 					<td>

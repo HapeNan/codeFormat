@@ -22,7 +22,10 @@ public class JavaForm {
     * @返回 ：String
     **/
    public static String formJava(String data) {
-   		String dataTmp=preSolve(data);		
+  		String dataTmp=preSolve(data);		
+       if(dataTmp=="error") {
+    	   return "error";
+       }
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "else");
        dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "if");
@@ -262,9 +265,11 @@ public class JavaForm {
    }
    public static String preSolve(String data) {
 	   String dataTmp=preNote(data,"//");
+//	   String dataTmp=data;
 	   if(!checkBrackets(dataTmp))
 	   {
 		   System.out.println("Error");//网页端弹出“错误信息汇报”
+		   return "error";
 	   }
 	   dataTmp = replaceStrToUUid(dataTmp,"\"");
        dataTmp = replaceStrToUUid(dataTmp,"'");
