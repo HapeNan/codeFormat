@@ -136,7 +136,7 @@ public class Tree {
 				// 先判断关键字的首字母，再截取关键字的结束标志
 				String startStr = "" + substring.charAt(start);
 				String endStr = "";
-				int end2 = 0;// 结束符下标
+				int end2 = start;// 结束符下标
 				if (substring.charAt(start) == 'e') {
 					while (true) {
 						if (substring.charAt(end2) == ' ' || substring.charAt(end2) == '{')
@@ -153,7 +153,6 @@ public class Tree {
 							end2++;
 					}
 					String keyString = substring.substring(start, end2);
-					System.out.println(keyString);
 					if (keyString.equals("case")) {
 						endStr = ":";
 					} else if (keyString.equals("catch")) {

@@ -78,6 +78,7 @@ public class JavaForm {
              case ';':
              case '}':
              case ')':
+             case '{':
                sb.append(" "+type);
                break;
              default:
@@ -101,6 +102,7 @@ public class JavaForm {
           //判断"type"关键字后一个字符的内容并处理
           switch(tmpstr.charAt(indexEnd+type.length())) {   
             case '(':
+            case '{':
               sb2.append(type +" ");
               break;
             default:
@@ -114,6 +116,7 @@ public class JavaForm {
 
       return sb2.toString();
    }
+
    
    /**
     * @说明 ：补全关键字后的花括号 
@@ -281,7 +284,7 @@ public class JavaForm {
        dataTmp = seperateByBlank(dataTmp, "if");
        dataTmp = seperateByBlank(dataTmp, "while");
        dataTmp = seperateByBlank(dataTmp, "catch");
-
+       dataTmp = seperateByBlank(dataTmp,"else");
        dataTmp = dataTmp.trim();
        dataTmp = replaceForSegmentToUUid(dataTmp,"for \\(");
        dataTmp = repalceHHF(dataTmp, "){", ") {");
