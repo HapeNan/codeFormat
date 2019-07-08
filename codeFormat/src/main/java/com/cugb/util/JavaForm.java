@@ -3,6 +3,7 @@ package com.cugb.util;
 
 import java.util.EmptyStackException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.UUID;
@@ -26,26 +27,29 @@ public class JavaForm {
        if(dataTmp=="error") {
     	   return "error";
        }
-       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "for");
-       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "else");
-       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "if");
-       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "try");
-       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "catch");
-       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "while");
-       dataTmp = AppendBraceUtil.AppendBrace(dataTmp, "do");
-       dataTmp = repalceHHF(dataTmp,"{","{\n");
-       dataTmp = repalceHHF(dataTmp,"}","}\n");
-       dataTmp = repalceHHF(dataTmp,"/*","\n/*\n");
-       dataTmp = repalceHHF(dataTmp,"* @","\n* @");
-       dataTmp = repalceHHF(dataTmp,"*/","\n*/\n");
-  
-       dataTmp = repalceHHF(dataTmp,";",";\n");
-       dataTmp = repalceHHF(dataTmp,"//","\n//");
-       
-       dataTmp = repalceHHF(dataTmp, "){", ") {");
-       //最后处理缩进
-       dataTmp = repalceHHFX(dataTmp,"\n");
-       
+         String keywords[]= {"if","for","switch","case","try","catch","while"};
+         Map<String,String> keyMap=new HashMap();
+         keyMap.put("i",")");
+         keyMap.put("s",")");
+         keyMap.put("f",")");
+         keyMap.put("t",")");
+         keyMap.put("w",")");
+         List <Tree> trees=Tree.CreateTree(keywords,dataTmp,keyMap);
+
+         dataTmp = trees.get(0).showString(trees);
+//       dataTmp = repalceHHF(dataTmp,"{","{\n");
+//       dataTmp = repalceHHF(dataTmp,"}","}\n");
+//       dataTmp = repalceHHF(dataTmp,"/*","\n/*\n");
+//       dataTmp = repalceHHF(dataTmp,"* @","\n* @");
+//       dataTmp = repalceHHF(dataTmp,"*/","\n*/\n");
+//  
+//       dataTmp = repalceHHF(dataTmp,";",";\n");
+//       dataTmp = repalceHHF(dataTmp,"//","\n//");
+//       
+//       dataTmp = repalceHHF(dataTmp, "){", ") {");
+//       //最后处理缩进
+//       dataTmp = repalceHHFX(dataTmp,"\n");
+//       
        for(Map.Entry<String, String> r : mapZY.entrySet()){
            dataTmp = dataTmp.replace(r.getKey(),r.getValue());
        }
@@ -265,7 +269,6 @@ public class JavaForm {
    }
    public static String preSolve(String data) {
 	   String dataTmp=preNote(data,"//");
-//	   String dataTmp=data;
 	   if(!checkBrackets(dataTmp))
 	   {
 		   System.out.println("Error");//网页端弹出“错误信息汇报”

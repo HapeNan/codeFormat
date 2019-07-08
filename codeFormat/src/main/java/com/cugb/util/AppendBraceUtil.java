@@ -8,103 +8,105 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AppendBraceUtil {
-	public static String AppendBrace(String string, String type) {
-//		 String slashMatcherString = "[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
-//		 Matcher slashMatcher = Pattern.compile(slashMatcherString).matcher(string);
-		 Matcher slashMatcher = Pattern.compile(type).matcher(string);
-	     StringBuilder sb = new StringBuilder();
-	     int indexHome = -1; //开始截取下标
-	     Boolean flag=false;
-	     while(slashMatcher.find()) {
-	    	 indexHome=-1;
-	         int indexEnd = slashMatcher.start();
-	         int i=indexEnd+type.length()-1;
-	         if("for".equals(type)||"if".equals(type)||"catch".equals(type)||"while".equals(type)) {
-	        	 //对于while要判断是while(){}还是do{}while();
-	        	 String tem2 = "";
-		         while(true){    //寻找当前关键字后匹配的后括号
-		         	if(i>=string.length()) {
-		        	 i--;
-		        	 break;
-		        	 }
-		             char c = string.charAt(i);
-		             if(c == ')'&&tem2.length()==1){
-		               break;
-		             }else if(c == ')'){
-		               tem2 = tem2.substring(0,tem2.length()-1);
-		             }else if(c == '('){
-		               tem2 += c;
-		             }
-		             i++;
-		         }
-	         }
-	         
-	         if((string.length()-1)==i)    //最后一个字符
-	           break;
-	         //如果while括号后直接接分号，则不进行，直接跳过
-	         if("while".equals(type)) {
-	        	 if(string.charAt(i+1)==';') {
-	        		 break;
-	        	 }
-	        	 else if(string.charAt(i+1)==' '){
-	        		 if((i+2)<string.length()&&string.charAt(i+2)==';') {
-	        			 break;
-	        		 }
-	        	 }
-	         }
-	           if(string.charAt(i+2)=='{'||string.charAt(i+1)=='{')
-	           continue;
-	         
-	         flag=true;
-	         String tmp = string.substring(indexHome+1,i+1); //获取后括号前面的数据(包括')')
-	         sb.append(tmp+" {");
-	         //i为索引，tempi为位置
-	         int tempi = i+1;
-	         while(true) {	//从tempi位置后开始往后寻找分号
-	             if(string.length()<=i) break;
-	        	 if(string.charAt(i)==';'){
-	                 String tmp2 = string.substring(tempi,i+1);//
-	                 String splitString=string.substring(tempi,string.length());
-	                 int bracePosition = singleLine(splitString, "for", tmp2);
-	                 int bracePosition2 =singleLine(splitString,"while",tmp2);
-	                 int bracePosition3= doubleLine(splitString, "if","else", tmp2);
-	                 int bracePosition4= doubleLine(splitString,"do","while",tmp2);
-	                 int bracePosition5= doubleLine(splitString,"try","catch",tmp2);
-	                 int []brace= {bracePosition,bracePosition2,bracePosition3,bracePosition4,bracePosition5};
-	                  Arrays.parallelSort(brace);
-//	                  System.out.println(brace);
-	                 if(brace[4]==-1) {
-	                	sb.append(tmp2 + " }");
-	                	indexHome=i;
-	                 }
-	                 else {
-	                	 tmp2=string.substring(tempi,brace[4]+tempi+1);
-	                	 sb.append(tmp2+" }");
-	                	 indexHome=brace[4]+tempi;
-	                 }
-	                 break;
-	             }
-	             i++;
-	         }
-	         if(flag==true) {
-	         if(indexHome!=(string.length()-1)) {
-	         sb.append(string.substring(indexHome+1,string.length()));
+//	public static String AppendBrace(String string, String type) {
+////		 String slashMatcherString = "[^A-Z|^a-z|^0-9|^$|^.]"+type+"[^A-Z|^a-z|^0-9|^$]";
+////		 Matcher slashMatcher = Pattern.compile(slashMatcherString).matcher(string);
+//		 Matcher slashMatcher = Pattern.compile(type).matcher(string);
+//	     StringBuilder sb = new StringBuilder();
+//	     int indexHome = -1; //开始截取下标
+//	     Boolean flag=false;
+//	     while(slashMatcher.find()) {
+//	    	 indexHome=-1;
+//	         int indexEnd = slashMatcher.start();
+//	         int i=indexEnd+type.length()-1;
+//	         if("for".equals(type)||"if".equals(type)||"catch".equals(type)||"while".equals(type)) {
+//	        	 //对于while要判断是while(){}还是do{}while();
+//	        	 String tem2 = "";
+//		         while(true){    //寻找当前关键字后匹配的后括号
+//		         	if(i>=string.length()) {
+//		        	 i--;
+//		        	 break;
+//		        	 }
+//		             char c = string.charAt(i);
+//		             if(c == ')'&&tem2.length()==1){
+//		               break;
+//		             }else if(c == ')'){
+//		               tem2 = tem2.substring(0,tem2.length()-1);
+//		             }else if(c == '('){
+//		               tem2 += c;
+//		             }
+//		             i++;
+//		         }
+//	         }
+//	         
+//	         if((string.length()-1)==i)    //最后一个字符
+//	           break;
+//	         //如果while括号后直接接分号，则不进行，直接跳过
+//	         if("while".equals(type)) {
+//	        	 if(string.charAt(i+1)==';') {
+//	        		 break;
+//	        	 }
+//	        	 else if(string.charAt(i+1)==' '){
+//	        		 if((i+2)<string.length()&&string.charAt(i+2)==';') {
+//	        			 break;
+//	        		 }
+//	        	 }
+//	         }
+//	           if(string.charAt(i+2)=='{'||string.charAt(i+1)=='{')
+//	           continue;
+//	         
+//	         flag=true;
+//	         String tmp = string.substring(indexHome+1,i+1); //获取后括号前面的数据(包括')')
+//	         sb.append(tmp+" {");
+//	         //i为索引，tempi为位置
+//	         int tempi = i+1;
+//	         while(true) {	//从tempi位置后开始往后寻找分号
+//	             if(string.length()<=i) break;
+//	        	 if(string.charAt(i)==';'){
+//	                 String tmp2 = string.substring(tempi,i+1);//
+//	                 String splitString=string.substring(tempi,string.length());
+//	                 int bracePosition = singleLine(splitString, "for", tmp2);
+//	                 int bracePosition2 =singleLine(splitString,"while",tmp2);
+//	                 int bracePosition3= doubleLine(splitString, "if","else", tmp2);
+//	                 int bracePosition4= doubleLine(splitString,"do","while",tmp2);
+//	                 int bracePosition5= doubleLine(splitString,"try","catch",tmp2);
+//	                 int []brace= {bracePosition,bracePosition2,bracePosition3,bracePosition4,bracePosition5};
+	
+	
+//	                  Arrays.parallelSort(brace);
+////	                  System.out.println(brace);
+//	                 if(brace[4]==-1) {
+//	                	sb.append(tmp2 + " }");
+//	                	indexHome=i;
+//	                 }
+//	                 else {
+//	                	 tmp2=string.substring(tempi,brace[4]+tempi+1);
+//	                	 sb.append(tmp2+" }");
+//	                	 indexHome=brace[4]+tempi;
+//	                 }
+//	                 break;
+//	             }
+//	             i++;
+//	         }
+//	         if(flag==true) {
+//	         if(indexHome!=(string.length()-1)) {
+//	         sb.append(string.substring(indexHome+1,string.length()));
+////	         string=sb.toString();
+////	         sb.delete(0, sb.length());
+////	         slashMatcher = Pattern.compile(type).matcher(string);
+//	         }
 //	         string=sb.toString();
 //	         sb.delete(0, sb.length());
 //	         slashMatcher = Pattern.compile(type).matcher(string);
-	         }
-	         string=sb.toString();
-	         sb.delete(0, sb.length());
-	         slashMatcher = Pattern.compile(type).matcher(string);
-//	         string=sb.toString();
-//	         sb.delete(0, sb.length());
-	       //  sb=new StringBuilder
-	         flag=false;
-	         }
-	     }
-	  
-	    return string;
-	}
+////	         string=sb.toString();
+////	         sb.delete(0, sb.length());
+//	       //  sb=new StringBuilder
+//	         flag=false;
+//	         }
+//	     }
+//	  
+//	    return string;
+//	}
 	
 	//找字串中是否有关键字
 	public static int doubleLine(String string,String type,String type2,String substring) {
